@@ -158,7 +158,7 @@ class Address(models.Model):
                             null=True,
                             on_delete=models.SET_NULL)
     street_address        = models.CharField(max_length=100)
-    apartment_address    = models.CharField(max_length=100)
+    apartment_address     = models.CharField(max_length=100)
     country               = models.CharField(max_length=100)
     zip                   = models.CharField(max_length=100)
     address_type          = models.CharField(max_length=2, choices=ADDRESS_CHOICES)
@@ -178,7 +178,10 @@ class Payment(models.Model):
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return "User: " + self.user.username + " Amount: " + str(self.amount)
+        if user:
+            return "User: " + self.user.username + " Amount: " + str(self.amount)
+        else:
+            return "User: Deleted User. Amount: " + str(self.amount)
 
 
 class Coupon(models.Model):
