@@ -19,9 +19,9 @@
 
         <!--Grid column-->
         <div class="col-md-4 mb-3">
-
-          <img src={{ object.image.url }} id='main_image' class="img-fluid" alt="">
-
+          {% if object.image and object.image.url %}
+            <img src={{ object.image.url }} id='main_image' class="img-fluid" alt="">
+          {% endif %}
           {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" class="img-fluid" alt=""> {% endcomment %}
 
         </div>
@@ -134,10 +134,8 @@
 var main_image = $('.main_image');
 var image_thumb = $('.image_thumb');
 
-image_thumb.addEventListener('click', function() {
-    alert('It works!');
-    console.log('clicked')
-    main_image.src=image_thumb.value();
-})
+// TODO add a method to change the image
+// Whichever image is clicked should 
+// appear in the main image box
 </script>
 {% endblock extra_scripts %}

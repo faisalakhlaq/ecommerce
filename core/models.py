@@ -2,8 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.shortcuts import reverse
-from django.db.models.signals import pre_save
-
+from django.db.models.signals import pre_save, pre_delete
+from django.dispatch.dispatcher import receiver
 from .utils import unique_slug_generator
 
 User = settings.AUTH_USER_MODEL
@@ -204,5 +204,11 @@ class Refund(models.Model):
 def item_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance=instance)
+
+@receiver(pre_delete, sender=Item)
+@receiver(pre_delete, sender=ItemImage)
+def image_delete_handler(sender, instance, *args, **kwargs):
+    if instance.image and instance.image.url:
+        instance.image.delete()
 
 pre_save.connect(item_pre_save_receiver, sender=Item)
