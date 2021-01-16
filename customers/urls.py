@@ -5,5 +5,5 @@ from .views import PartnersHome
 app_name = 'customers'
 
 urlpatterns = [
-    path('home', PartnersHome.as_view(), name='home'),
+    path('partners_home', PartnersHome.as_view(), name='partners_home'),
 ]

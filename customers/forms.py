@@ -1,11 +1,20 @@
-from .models import SupplierEmployee
+from django import forms
 
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password')
+from core.models import Item
+# from .models import SupplierEmployee
 
-class SupplierEmployeeForm(forms.ModelForm):
+# class UserForm(forms.ModelForm):
+#     class Meta:
+#         model = User
+#         fields = ('username', 'first_name', 'last_name', 'email', 'password')
+
+# class SupplierEmployeeForm(forms.ModelForm):
+#     class Meta:
+#         model = SupplierEmployee
+#         fields = __all__
+
+class ItemForm(forms.ModelForm):
+    
     class Meta:
-        model = SupplierEmployee
-        fields = __all__
+        model = Item
+        fields = '__all__'

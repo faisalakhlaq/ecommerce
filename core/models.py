@@ -12,7 +12,8 @@ CATEGORY_CHOICES = (
     ('S', 'Shirt'),
     ('SW', 'Sport Wear'),
     ('OW', 'Outwear'),
-    ('P', 'Pants')
+    ('P', 'Pants'),
+    ('O', 'Other'),
 )
 LABEL_CHOICES = (
     ('P', 'primary'),

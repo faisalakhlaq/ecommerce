@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -262,7 +263,7 @@ class PaymentView(View):
         messages.warning(self.request, "Invalid data received")
         return redirect("/payment/stripe/")
 
-
+@login_required(login_url='/accounts/login/')
 def add_to_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
     order_item, created = OrderItem.objects.get_or_create(
