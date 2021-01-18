@@ -1,0 +1,32 @@
+version: '3.8'
+
+services: 
+# Under db for the database we want the Docker image 
+# for Postgres 10.1 and use volumes to tell Compose 
+# where the container should be located in our Docker container.
+  db:
+    image: postgres
+    environment: 
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    # volumes: 
+    #   - postgres_data:/var/lib/postgresql/data/
+  web:
+    # build an image from the current directory
+    build: .
+    # start up the server at 0.0.0.0:8000
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    # We use volumes to tell Compose to store the code in 
+    # our Docker container at /code/
+    volumes: 
+      - .:/code
+    ports: 
+      - 8000:8000
+    environment: 
+      - DEBUG=1
+    # depends_on says that we should start the db first 
+    # before running our web services.
+    depends_on: 
+      - db
+
+# volumes: 
+#   - postgres_data:/var/lib/postgresql/data/
