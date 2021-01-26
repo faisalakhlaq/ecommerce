@@ -13,7 +13,7 @@ class PartnersHome(View):
     def __init__(self):
         self.ImageFormset = modelformset_factory(ItemImage, 
                                             form=ItemImageForm, 
-                                            extra=5)
+                                            extra=1)
         super(PartnersHome, self).__init__()
 
     @method_decorator(login_required(login_url='/accounts/login/'))
@@ -46,9 +46,9 @@ class PartnersHome(View):
                         item_image = ItemImage(item=item, image=image)
                         item_image.save()
                 messages.success(self.request, 'Successfully added new item')
-                return HttpResponseRedirect('customers:partners_home')
-            else:
-                return redirect('customers:partners_home')
+                # return HttpResponseRedirect('customers:partners_home')
+            # else:
+            return redirect('customers:partners_home')
         except Exception as e:
             print('Exception while creating item by partner: ', e)
             messages.error(self.request, 'Sorry! Unable to add the item.') 

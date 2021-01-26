@@ -5,20 +5,20 @@
 {% block content %}
 <main>
     <div class="container">
-      <!--Section: Products v.3-->
       <section class="mb-4">
-        <!--Grid row-->
         <div class="row wow fadeIn">
           <div class='col-6 offset-3'>
             <h1>Welcome to partners home page</h1>
-            <form class="login" method="POST" action="" enctype='multipart/form-data'>
+            <form id='form-container' class="login" method="POST" action="" enctype='multipart/form-data'>
                 {% csrf_token %}
                 {{ item_form|crispy }}
                 {{ image_formset.management_form }}
                 {% for form in image_formset %}
+                  <div class='image-form'>
                     {{ form|crispy }}
+                  </div>
                 {% endfor %}
-                {% comment %} <a class="btn btn-default" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> {% endcomment %}
+                <button id="add-form" class="btn btn-primary" type="button">Add Another Image</button>
                 <button class="btn btn-primary" type="submit">{% trans "Add New" %}</button>
             </form>
           </div>
@@ -28,3 +28,35 @@
 </main>
 
 {% endblock content %}
+{% block extra_scripts %}
+<script>
+    let imageForm = document.querySelectorAll(".image-form");
+    let container = document.querySelector("#form-container");
+    let addButton = document.querySelector("#add-form");
+    let totalForms = document.querySelector("#id_images_form-TOTAL_FORMS");
+
+    let formNum = imageForm.length-1;
+    addButton.addEventListener('click', addForm);
+
+    function addForm(e){
+        e.preventDefault();
+
+        let newForm = imageForm[0].cloneNode(true);
+        let formRegex = RegExp(`form-(\\d){1}-`,'g');
+
+        formNum++;
+        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`);
+        container.insertBefore(newForm, addButton);
+        
+        totalForms.setAttribute('value', `${formNum+1}`);
+        // create a delete button
+        var deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "Delete";
+        deleteButton.addEventListener('click', function(){ 
+          newForm.remove();
+          this.remove()
+          });
+        container.insertBefore(deleteButton, addButton);
+    }
+</script>
+{% endblock extra_scripts %}
