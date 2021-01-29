@@ -78,14 +78,9 @@
 {% endblock content %}
 {% block extra_scripts %}
 <script>
-var image_thumb = $('.image_thumb');
 function displayAsMainImage(image){
-  console.log('clicked');
   var main_image = document.getElementById('main_image');
   main_image.src = image.src;
 }
-// TODO add a method to change the image
-// Whichever image is clicked should 
-// appear in the main image box
 </script>
 {% endblock extra_scripts %}
