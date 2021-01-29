@@ -7,7 +7,9 @@
       <div class="row wow fadeIn" >
         <div class="col-md-1 mb-1">
           {% for image in images %}
-            <img src={{ image.image.url }} id='image_thumb' value={{image.image.url}} class="img-fluid" alt="">
+            <img src={{ image.image.url }} id='image_thumb' 
+            value={{image.image.url}} class="img-fluid" alt=""
+            onclick='displayAsMainImage(this)'>
           {% endfor %}
         </div>
         <div class="col-md-4 mb-3">
@@ -76,9 +78,12 @@
 {% endblock content %}
 {% block extra_scripts %}
 <script>
-var main_image = $('.main_image');
 var image_thumb = $('.image_thumb');
-
+function displayAsMainImage(image){
+  console.log('clicked');
+  var main_image = document.getElementById('main_image');
+  main_image.src = image.src;
+}
 // TODO add a method to change the image
 // Whichever image is clicked should 
 // appear in the main image box
