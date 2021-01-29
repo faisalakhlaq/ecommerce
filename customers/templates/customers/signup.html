@@ -15,6 +15,15 @@
                 {% csrf_token %}
                 {{ user_form|crispy }}
                 {{ employee_form|crispy }}
+                <div class='' aria-label='Address'>
+                    {{ address_form.street| as_crispy_field}}
+                    {{ address_form.city| as_crispy_field}}
+                    {{ address_form.postcode| as_crispy_field}}
+                    {{ address_form.country| as_crispy_field}}
+                    {{ address_form.phone| as_crispy_field}}
+                    {{ address_form.mobile| as_crispy_field}}
+                </div>
+                <button class="btn btn-primary" type="submit">{% trans "Sign Up" %} &raquo;</button>
             </form>
           </div>
         </div>

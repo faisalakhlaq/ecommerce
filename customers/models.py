@@ -11,12 +11,10 @@ class Supplier(models.Model):
     """Supplier supplies the products. Supplier can supply 
     a range of products from different brands."""
     address         = models.ForeignKey(Address, 
-                            verbose_name=_("Supplier Employee"), 
+                            verbose_name=_("Supplier Address"), 
                             related_name='supplier', 
                             on_delete=models.SET_NULL, 
                             blank=True, null=True)
-    # name       = models.CharField(max_length=255)
-    # cvr        = models.CharField(max_length=20, blank=True, null=True)
 
 
 class SupplierEmployee(models.Model):
@@ -30,7 +28,7 @@ class SupplierEmployee(models.Model):
                             upload_to='profile_images/', 
                             null=True, blank=True)
     company             = models.ForeignKey("Supplier", 
-                            verbose_name=_("Supplier Employee"), 
+                            verbose_name=_("Company"), 
                             related_name='supplier_employee', 
                             on_delete=models.SET_NULL,
                             blank=True, null=True)

@@ -6,21 +6,20 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.shortcuts import render, redirect
 
-from .forms import ItemForm, ItemImageForm, CreateSupplierEmployeeForm, UserForm
 from core.models import ItemImage
+from utils.forms import AddressForm
+from .forms import ItemForm, ItemImageForm, CreateSupplierEmployeeForm, UserForm
+from .models import SupplierEmployee
 
-class PartnersHome(View):
+class PartnersHomeView(View):
     def __init__(self):
         self.ImageFormset = modelformset_factory(ItemImage, 
                                             form=ItemImageForm, 
                                             extra=1)
-        super(PartnersHome, self).__init__()
+        super(PartnersHomeView, self).__init__()
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def get(self, *args, **kwargs):
-        # image_formset = modelformset_factory(ItemImage, 
-        #                                     form=ItemImageForm, 
-        #                                     extra=5)
         context = {
             'item_form': ItemForm(prefix='item'),
             'image_formset': self.ImageFormset(prefix='images_form', queryset=ItemImage.objects.none())
@@ -40,7 +39,7 @@ class PartnersHome(View):
                 item = item_form.save()
                 for form in image_formset.cleaned_data:
                     #this helps to not crash if the user   
-                    #do not upload all the photos
+                    #has not uploaded all the photos
                     if form:
                         image = form['image']
                         item_image = ItemImage(item=item, image=image)
@@ -55,10 +54,40 @@ class PartnersHome(View):
             return redirect('customers:partners_home')
 
 
-class SupplierEmployee(View):
+class SupplierEmployeeCreateView(View):
     def get(self, *args, **kwargs):
         context = {
             'user_form': UserForm(),
             'employee_form': CreateSupplierEmployeeForm(),
+            'address_form': AddressForm(),
+        }
+        return render(self.request, 'customers/signup.html', context)
+
+    def post(self, *args, **kwargs):
+        user_form = UserForm(self.request.POST)
+        employee_form = CreateSupplierEmployeeForm(self.request.POST)
+        address_form = AddressForm(self.request.POST)
+        if user_form.is_valid() and employee_form.is_valid() and address_form.is_valid():
+            user = user_form.save()
+            user.set_password(user_form.cleaned_data['password'])
+            user.save()
+            address = address_form.save()
+            bday = employee_form.cleaned_data.get("birth_date")
+            image = employee_form.cleaned_data.get('image')
+            company = employee_form.cleaned_data.get('company')
+            employee = SupplierEmployee.objects.create(
+               user = user,
+               birth_date = bday,
+               image = image,
+               company = company,
+               address = address, 
+            )
+            messages.success(self.request, 'Your account was successfully created!')
+            return redirect('/')
+        messages.success(self.request, 'Unable to create account!')
+        context = {
+            'user_form':user_form,
+            'employee_form':employee_form,
+            'address_form':address_form,
         }
         return render(self.request, 'customers/signup.html', context)
