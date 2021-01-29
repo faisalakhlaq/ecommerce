@@ -10,6 +10,7 @@ from core.models import ItemImage
 from utils.forms import AddressForm
 from .forms import ItemForm, ItemImageForm, CreateSupplierEmployeeForm, UserForm
 from .models import SupplierEmployee
+from .decorators import is_supplier_employee
 
 class PartnersHomeView(View):
     def __init__(self):
@@ -19,6 +20,7 @@ class PartnersHomeView(View):
         super(PartnersHomeView, self).__init__()
 
     @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(is_supplier_employee)
     def get(self, *args, **kwargs):
         context = {
             'item_form': ItemForm(prefix='item'),
@@ -26,6 +28,8 @@ class PartnersHomeView(View):
         }
         return render(self.request, 'customers/partners_home.html', context)
 
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(is_supplier_employee)
     def post(self, *args, **kwargs):
         try:
             image_formset = self.ImageFormset(self.request.POST, 
@@ -65,7 +69,7 @@ class SupplierEmployeeCreateView(View):
 
     def post(self, *args, **kwargs):
         user_form = UserForm(self.request.POST)
-        employee_form = CreateSupplierEmployeeForm(self.request.POST)
+        employee_form = CreateSupplierEmployeeForm(self.request.POST, self.request.FILES)
         address_form = AddressForm(self.request.POST)
         if user_form.is_valid() and employee_form.is_valid() and address_form.is_valid():
             user = user_form.save()
