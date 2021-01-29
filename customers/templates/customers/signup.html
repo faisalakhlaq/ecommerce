@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}{% trans 'Partners Signup' %}|{{ block.super }}{% endblock title %}
+{% block content %}
+<main>
+    <div class="container">
+      <!--Section: Products v.3-->
+      <section class="mb-4">
+        <!--Grid row-->
+        <div class="row wow fadeIn">
+          <div class='col-6 offset-3'>
+            <h1>Welcome to supplier's signup</h1>
+            <form class="login" method="POST" action="" enctype='multipart/form-data'>
+                {% csrf_token %}
+                {{ user_form|crispy }}
+                {{ employee_form|crispy }}
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+</main>
+{% endblock content %}

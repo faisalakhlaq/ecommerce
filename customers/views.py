@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.shortcuts import render, redirect
 
-from .forms import ItemForm, ItemImageForm
+from .forms import ItemForm, ItemImageForm, CreateSupplierEmployeeForm, UserForm
 from core.models import ItemImage
 
 class PartnersHome(View):
@@ -53,3 +53,12 @@ class PartnersHome(View):
             print('Exception while creating item by partner: ', e)
             messages.error(self.request, 'Sorry! Unable to add the item.') 
             return redirect('customers:partners_home')
+
+
+class SupplierEmployee(View):
+    def get(self, *args, **kwargs):
+        context = {
+            'user_form': UserForm(),
+            'employee_form': CreateSupplierEmployeeForm(),
+        }
+        return render(self.request, 'customers/signup.html', context)
