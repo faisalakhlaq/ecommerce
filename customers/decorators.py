@@ -13,5 +13,5 @@ def is_supplier_employee(function):
             return function(request, *args, **kwargs)
         else:
             messages.warning(request, 'Sorry you are not registerd as Supplier. Permission Denied')
-            return redirect(request.META.get('HTTP_REFERER', '/'))
+            return redirect('/')
     return wrap
