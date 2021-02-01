@@ -179,7 +179,7 @@ class Payment(models.Model):
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        if user:
+        if self.user:
             return "User: " + self.user.username + " Amount: " + str(self.amount)
         else:
             return "User: Deleted User. Amount: " + str(self.amount)
